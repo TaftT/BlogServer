@@ -56,6 +56,22 @@ server.post("/posts", function(req, res){
     res.json(response);
 
   })
+});
+
+  server.delete("/posts/:id", function(req , res){
+    postSchema.findByIdAndDelete(req.params.id).then(function(){
+      res.status(204);
+      res.send();
+    }).catch(function(error){
+      var response ={
+        msg: error.message
+      };
+      res.status(400);
+      res.json(response);
+
+    })
+
+  });
   // var newPost = {
   //
   //     title: req.body.title,
@@ -69,7 +85,7 @@ server.post("/posts", function(req, res){
   // data.posts.unshift(newPost); //adding to a list in data.js
   // res.status(201);
   // res.send();
-});
+
 
 
 
