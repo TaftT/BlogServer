@@ -72,6 +72,43 @@ server.post("/posts", function(req, res){
     })
 
   });
+
+  server.put("/posts/:id", function(req, res){
+    postSchema.findById(req.params.id).then(function(item){
+      if(item == null){
+        res.status(404);
+        res.json({
+          msg: `there is no song with id of ${req.params.id}`
+        });
+      } else{
+        if (req.body.title != undefined){
+          item.title = req.body.title;
+        }
+        if (req.body.author != undefined){
+          item.author = req.body.author;
+        }
+        if (req.body.image != undefined){
+          item.image = req.body.image;
+        }
+        if (req.body.category != undefined){
+          item.category = req.body.category;
+        }
+        if (req.body.text != undefined){
+          item.text = req.body.text;
+        }
+        item.save().then(function(){
+          res.status(200);
+          res.json({
+            item: item
+          });
+        })
+      }
+    }).catch(function(error){
+      res.status(400).json({msg : error.message});
+    });
+  });
+
+
   // var newPost = {
   //
   //     title: req.body.title,
